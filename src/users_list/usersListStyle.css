@@ -1,0 +1,11 @@
+.enabledButton {
+    background-color: green;
+    color: gainsboro;
+    font-weight: bold;
+}
+
+.disabledButton {
+    background-color: red;
+    color: gainsboro;
+    font-weight: bold;
+}

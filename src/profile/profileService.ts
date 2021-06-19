@@ -56,10 +56,20 @@ export async function getCurrentProfile(): Promise<Profile> {
   }
 }
 
-export function getPictureUrl(id: string) {
-  if (id && id.length > 0) {
-    return environment.backendUrl + "/v1/image/" + id
-  } else {
-    return "/assets/profile.png"
+export interface Image {
+  name: string
+  type: string
+  description: string //image base64
+}
+
+export async function getImage(id:string): Promise<Image> {
+  try {
+    return (await axios.get(environment.backendUrl + "/v1/image/" + id)).data as Image
+  } catch (error) {
+    const axiosError = error as AxiosError
+    if (axiosError.response && axiosError.response.status === 401) {
+      void logout()
+    }
+    throw error
   }
 }

@@ -25,7 +25,7 @@ export default function ImageUpload(props: {
 
   return (
     <div>
-      <img src={props.src} alt="" height="100" onClick={imageClick} />
+      <img src={props.src} alt="" height="200" onClick={imageClick} />
       <input
         type="file"
         ref={fileInput}

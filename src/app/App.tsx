@@ -8,6 +8,8 @@ import Profile from "../profile/Profile"
 import Login from "../user/Login"
 import Password from "../user/Password"
 import Register from "../user/Register"
+import EditPermissions from "../users_list/EditPermissions"
+import UsersList from "../users_list/UsersList"
 import Welcome from "../welcome/Welcome"
 import "./App.css"
 import Menu from "./Menu"
@@ -39,6 +41,8 @@ export default function App() {
               <LoggedInRoute path="/pets" component={Pets} />
               <LoggedInRoute path="/editPet" component={NewPet} />
               <LoggedInRoute path="/editPet/:id" component={NewPet} />
+              <LoggedInRoute path="/users" component={UsersList} />
+              <LoggedInRoute path="/editPermissions/:id" component={EditPermissions} />
             </td>
           </tr>
         </tbody>

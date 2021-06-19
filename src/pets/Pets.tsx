@@ -12,6 +12,7 @@ import { RouteComponentProps } from "react-router-dom"
 
 export default function Pets(props: RouteComponentProps) {
   const [pets, setPets] = useState<Pet[]>([])
+  const [userEnabled, setUserEnabled] = useState(true)
 
   const errorHandler = useErrorHandler()
 
@@ -19,8 +20,10 @@ export default function Pets(props: RouteComponentProps) {
     try {
       const result = await loadPets()
       setPets(result)
+      setUserEnabled(true)
     } catch (error) {
       errorHandler.processRestValidations(error)
+      setUserEnabled(false)
     }
   }
 
@@ -39,37 +42,41 @@ export default function Pets(props: RouteComponentProps) {
   return (
     <GlobalContent>
       <FormTitle>Mascotas</FormTitle>
-      <table id="mascotas" className="table">
-        <thead>
-          <tr>
-            <th> Nombre </th>
-            <th> Descripción </th>
-            <th> </th>
-          </tr>
-        </thead>
-        <tbody>
-          {pets.map((pet, i) => {
-            return (
-              <tr key={i}>
-                <td>{pet.name}</td>
-                <td>{pet.description}</td>
-                <td className="text">
-                  <img
-                    src="/assets/edit.png"
-                    alt=""
-                    onClick={() => editPetClick(pet.id)}
-                  />
-                </td>
+      {userEnabled ? 
+        <div>
+          <table id="mascotas" className="table">
+            <thead>
+              <tr>
+                <th> Nombre </th>
+                <th> Descripción </th>
+                <th> </th>
               </tr>
-            )
-          })}
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+              {pets.map((pet, i) => {
+                return (
+                  <tr key={i}>
+                    <td>{pet.name}</td>
+                    <td>{pet.description}</td>
+                    <td className="text">
+                      <img
+                        src="/assets/edit.png"
+                        alt=""
+                        onClick={() => editPetClick(pet.id)}
+                      />
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
 
-      <FormButtonBar>
-        <FormAcceptButton label="Nueva Mascota" onClick={newPetClick} />
-        <FormButton label="Cancelar" onClick={() => goHome(props)} />
-      </FormButtonBar>
+          <FormButtonBar>
+          <FormAcceptButton label="Nueva Mascota" onClick={newPetClick} />
+          <FormButton label="Cancelar" onClick={() => goHome(props)} />
+          </FormButtonBar>
+        </div>
+      : <h3>Usuario deshabilitado, no puede ver sus mascotas</h3>}
     </GlobalContent>
   )
 }

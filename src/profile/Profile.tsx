@@ -58,7 +58,7 @@ export default function Profile(props: RouteComponentProps) {
   const uploadPicture = async (image: string) => {
     try {
       const result = await updateProfilePicture({
-        image,
+        image
       })
       setPicture(result.id)
     } catch (error) {
