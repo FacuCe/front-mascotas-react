@@ -6,6 +6,7 @@ import FormTitle from "../common/components/FormTitle"
 import { RouteComponentProps } from 'react-router-dom'
 
 import "./usersListStyle.css"
+import DangerLabel from '../common/components/DangerLabel'
 
 function UsersList(props: RouteComponentProps) {
 
@@ -67,6 +68,7 @@ function UsersList(props: RouteComponentProps) {
     return (
         <GlobalContent>
             <FormTitle>Lista de Usuarios</FormTitle>
+            <DangerLabel message={errorHandler.errorMessage}></DangerLabel>
             {permitted ? 
                 <table className="table">
                 <thead>

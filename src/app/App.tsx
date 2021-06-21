@@ -1,6 +1,7 @@
 import React from "react"
 import { HashRouter, Route } from "react-router-dom"
 import LoggedInRoute from "../common/components/LoggedInRoute"
+import FriendList from "../social/FriendList"
 import Info from "../info/Info"
 import NewPet from "../pets/NewPet"
 import Pets from "../pets/Pets"
@@ -43,6 +44,7 @@ export default function App() {
               <LoggedInRoute path="/editPet/:id" component={NewPet} />
               <LoggedInRoute path="/users" component={UsersList} />
               <LoggedInRoute path="/editPermissions/:id" component={EditPermissions} />
+              <LoggedInRoute path="/friendList" component={FriendList} />
             </td>
           </tr>
         </tbody>

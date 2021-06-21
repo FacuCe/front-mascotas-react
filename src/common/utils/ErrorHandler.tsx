@@ -1,5 +1,6 @@
 import { useForceUpdate } from "./Tools"
 import { useState } from "react"
+import { AxiosError } from "axios"
 
 interface IError {
   response?: {
@@ -28,23 +29,28 @@ export class ErrorHandler {
   public errors: Map<string, string> = new Map<string, string>()
 
   // Procesa errores rest y llena errors de acuerdo a los resultados
-  public processRestValidations(data: IError) {
+  public processRestValidations(dataError: AxiosError) {
+
     if (this.errors && this.errors.size > 0) {
       this.cleanRestValidations()
       this.forceUpdate()
     }
-    if (!data.response || !data.response.data) {
+
+    if (!dataError.response || !dataError.response.data) {
       this.errorMessage =
         "Problemas de conexión, verifique conexión a internet."
       this.forceUpdate()
       return
     }
-    if (data.response.data.messages) {
-      for (const error of data.response.data.messages) {
+
+    //console.log(dataError.response.data.message)
+    if (dataError.response.data.message) {
+      for (const error of dataError.response.data.message) {
+        this.errorMessage = error.message
         this.errors.set(error.path, error.message)
       }
-    } else if (typeof data.response.data.error === "string") {
-      this.errorMessage = data.response.data.error
+    } else if (typeof dataError.response.data.error === "string") {
+      this.errorMessage = dataError.response.data.error
     } else {
       this.errorMessage = "Problemas internos del servidor"
     }

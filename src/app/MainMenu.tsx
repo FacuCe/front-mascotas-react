@@ -22,6 +22,9 @@ export default function MainMenu() {
 
       <h6 className="menu_section">Permisos</h6>
       <NavLink to="/users" className="menu_item btn btn-sm btn-link">Lista de Usuarios</NavLink><br />
+
+      <h6 className="menu_section">Social</h6>
+      <NavLink to="/friendList" className="menu_item btn btn-sm btn-link">Lista de Amigos</NavLink>
     </div>
   )
 }
