@@ -9,15 +9,38 @@ export interface Friend {
     login: string
 }
 
+export interface Message {
+    from: string
+    content: string
+    created_at: string
+}
+
+export async function sendMessage(friendLogin:string, content:string): Promise<void> {
+    try {
+        const friendToChat = {message: {login:friendLogin, content: content}}
+        await axios.post(environment.backendUrl + "/v1/user/send_message", friendToChat)
+    } catch (error) {
+        const axiosError = error as AxiosError
+        throw axiosError
+    }
+}
+
+export async function loadMessages(friendLogin:string): Promise<Message[]> {
+    try {
+        const msg = {message: {login:friendLogin, content: ""}}
+        return (await axios.post(environment.backendUrl + "/v1/user/load_messages/", msg)).data as Message[]
+    } catch (error) {
+        const axiosError = error as AxiosError
+        throw axiosError
+    }
+}
+
 export async function loadFriendList(): Promise<Friend[]> {
     try {
         return (await (axios.get(environment.backendUrl + "/v1/user/friend_list"))).data as Friend[]
     } catch (error) {
         const axiosError = error as AxiosError
-        if (axiosError.response && axiosError.response.status === 401) {
-            console.log("Denied access")
-        }
-        throw error
+        throw axiosError
     }
 }
 

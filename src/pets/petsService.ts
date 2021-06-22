@@ -13,10 +13,7 @@ export async function loadPets(): Promise<Pet[]> {
     return (await axios.get(environment.backendUrl + "/v1/pet")).data as Pet[]
   } catch (error) {
     const axiosError = error as AxiosError
-    if (axiosError.response && axiosError.response.status === 401) {
-        console.log("disabled user")
-    }
-    throw error
+    throw axiosError
   }
 }
 

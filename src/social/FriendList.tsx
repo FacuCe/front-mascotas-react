@@ -11,12 +11,14 @@ import FormInput from '../common/components/FormInput'
 import DangerLabel from '../common/components/DangerLabel'
 import FormButtonBar from '../common/components/FormButtonBar'
 import FormAcceptButton from '../common/components/FormAcceptButton'
+import Chat from './Chat'
 
 function FriendList(props: RouteComponentProps) {
 
     const [friendList, setFriendList] = useState<Friend[]>([])
     const [friendLogin, setFriendLogin] = useState("")
     const [pendingList, setPendingList] = useState<Friend[]>([])
+    const [chatOpen, setChatOpen] = useState(false)
     const errorHandler = useErrorHandler()
 
     const getFriendList = async () => {
@@ -75,9 +77,9 @@ function FriendList(props: RouteComponentProps) {
         
     }
 
-    const refreshData = () => {
-        void getFriendList()
-        void getPendingList()
+    const openChat = (login:string) => {
+        setFriendLogin(login)
+        setChatOpen(true)
     }
 
     useEffect(() => {
@@ -85,20 +87,34 @@ function FriendList(props: RouteComponentProps) {
         void getPendingList()
     }, [])
 
+    useEffect(() => {
+        let timerID = setInterval( () => {
+            void getFriendList()
+            void getPendingList()
+        }, 5000 );
+        return function cleanup() {
+            clearInterval(timerID);
+        };
+    })
+
+    if (chatOpen) {
+        return (
+            <GlobalContent>
+                <DangerLabel message={errorHandler.errorMessage} />
+                <button type="button" className="btn btn-danger my-4" onClick={() => setChatOpen(false)}>Salir del chat</button>
+                <Chat friendLogin={friendLogin}></Chat>
+            </GlobalContent>
+        )
+    }
+
     return (
         <GlobalContent>
             <FormTitle>Amigos</FormTitle>
             
             <DangerLabel message={errorHandler.errorMessage} />
-            
-            <div className="text-center">
-                <button type="button" className="btn btn-success my-4" onClick={() => refreshData()}>
-                    Actualizar todo
-                </button>
-            </div>
 
-            <div className="bg-light py-3 px-3 text-center">
-                <h4>Agregar Amigos</h4>
+            <div className="bg-light py-3 px-3 mt-4 text-center">
+                <h4>Agregar Amigo</h4>
                 <Form>
                     <FormInput
                         label="Buscar por login"
@@ -165,6 +181,7 @@ function FriendList(props: RouteComponentProps) {
                                     <th>name</th>
                                     <th>login</th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -174,6 +191,11 @@ function FriendList(props: RouteComponentProps) {
                                             <td>{friend.id}</td>
                                             <td>{friend.name}</td>
                                             <td>{friend.login}</td>
+                                            <td>
+                                                <button type="button" className="btn btn-light btn-sm" onClick={() => openChat(friend.login)}>
+                                                    Chat
+                                                </button>
+                                            </td>
                                             <td>
                                                 <button type="button" className="btn btn-danger btn-sm" onClick={() => removeFriend(friend)}>
                                                     Eliminar Amigo
