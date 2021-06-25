@@ -66,7 +66,7 @@ function Chat(params: {friendLogin:string}) {
                                     <span>{msg.content}</span>
                                     <div className="d-flex justify-content-between text-light">
                                         <div className="mr-3">
-                                            {parseInt(msg.created_at.substr(11,2))-3}{msg.created_at.substr(13,3)}
+                                            {msg.created_at.substr(11,5)}
                                         </div>
                                         <div>
                                             {msg.created_at.substr(8,2)}-{msg.created_at.substr(5,2)}-{msg.created_at.substr(0,4)}
@@ -81,7 +81,7 @@ function Chat(params: {friendLogin:string}) {
                                     <span>{msg.content}</span>
                                     <div className="d-flex justify-content-between text-light">
                                         <div className="mr-3">
-                                            {parseInt(msg.created_at.substr(11,2))-3}{msg.created_at.substr(13,3)}
+                                            {msg.created_at.substr(11,5)}
                                         </div>
                                         <div>
                                             {msg.created_at.substr(8,2)}-{msg.created_at.substr(5,2)}-{msg.created_at.substr(0,4)}
